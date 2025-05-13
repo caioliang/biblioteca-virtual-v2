@@ -22,13 +22,13 @@ import jakarta.annotation.PostConstruct;
 
 @Configuration
 public class DatabaseSeeder {
-    
+
     @Autowired
     private CategoryRepository categoryRepository;
 
     @Autowired
     private ReviewRepository reviewRepository;
-    
+
     @Autowired
     private UserRepository userRepository;
 
@@ -37,50 +37,47 @@ public class DatabaseSeeder {
 
     // @Autowired
     @PostConstruct
-    public void init(){
-            var categories = List.of(
+    public void init() {
+        var categories = List.of(
                 Category.builder().name("Harry Potter").icon("Bus").build(),
                 Category.builder().name("Viagem ao centro da Terra").icon("Cherry").build(),
                 Category.builder().name("Quarto de despejo").icon("Heart").build(),
-                Category.builder().name("1976").icon("Dice").build()
-            );
+                Category.builder().name("1976").icon("Dice").build());
 
-            categoryRepository.saveAll(categories);
-        
-            var descriptions = List.of(
+        categoryRepository.saveAll(categories);
+
+        var descriptions = List.of(
                 "Um livro incrível!",
                 "Uma leitura fascinante.",
                 "Não consegui parar de ler.",
                 "Uma história envolvente.",
-                "Recomendo para todos os amantes de literatura."
-            );
+                "Recomendo para todos os amantes de literatura.");
 
-            var reviews = new ArrayList<Review>();
-            for (int i = 0; i < 50; i++){
-                reviews.add(
+        var reviews = new ArrayList<Review>();
+        for (int i = 0; i < 50; i++) {
+            reviews.add(
                     Review.builder()
-                        .description(descriptions.get(new Random().nextInt(descriptions.size())))
-                        .note(BigDecimal.valueOf(10 + new Random().nextDouble() * 500))
-                        .date(LocalDate.now().minusDays(new Random().nextInt(30)))
-                        .type(new Random().nextBoolean() ? ReviewType.FISICO : ReviewType.DIGITAL) 
-                        .category(categories.get(new Random().nextInt(categories.size())))
-                        .build()
-                );
+                            .description(descriptions.get(new Random().nextInt(descriptions.size())))
+                            .note(BigDecimal.valueOf(10 + new Random().nextDouble() * 500))
+                            .date(LocalDate.now().minusDays(new Random().nextInt(30)))
+                            .type(new Random().nextBoolean() ? ReviewType.FISICO : ReviewType.DIGITAL)
+                            .category(categories.get(new Random().nextInt(categories.size())))
+                            .build());
 
             reviewRepository.saveAll(reviews);
 
-            userRepository.saveAll(List.of(
-                User.builder()
-                    .email("caioliang2@gmail.com")
-                    .password(passwordEncoder.encode("isso1"))
-                    .role(UserRole.ADMIN)
-                    .build(),
-                User.builder()
-                    .email("celina.alcantra@gmail.com")
-                    .password(passwordEncoder.encode("123456"))
-                    .role(UserRole.USER)
-                    .build()));
-            }
         }
+        userRepository.saveAll(List.of(
+                User.builder()
+                        .email("generico@gmail.com")
+                        .password(passwordEncoder.encode("1234"))
+                        .role(UserRole.ADMIN)
+                        .build(),
+                User.builder()
+                        .email("generico2@gmail.com")
+                        .password(passwordEncoder.encode("123456"))
+                        .role(UserRole.USER)
+                        .build()));
+    }
 
 }
